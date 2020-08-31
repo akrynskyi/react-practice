@@ -3,7 +3,7 @@ import './todo-list.css';
 
 export const TodoList = () => {
   return (
-    <ul className="collection">
+    <ul className="collection list">
       <li className="collection-item item">
         <span>Apple</span>
         <div>
@@ -16,5 +16,5 @@ export const TodoList = () => {
         </div>
       </li>
     </ul>
-  )
+  );
 }
