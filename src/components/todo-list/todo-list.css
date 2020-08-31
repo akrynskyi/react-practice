@@ -8,25 +8,3 @@
   align-items: center;
   justify-content: space-between;
 }
-
-.btn-icon {
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  background: transparent;
-  border-radius: 4px;
-  outline: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s linear;
-}
-
-.btn-icon:not(:first-child) {
-  margin-right: 10px;
-}
-
-.btn-icon:hover {
-  background: rgb(209, 209, 209);
-}

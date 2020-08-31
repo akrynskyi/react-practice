@@ -1,7 +1,7 @@
 import React from 'react';
 import './app-header.css';
 
-export const AppHeader = () => {
+export const AppHeader = ({todosTotal}) => {
   return (
     <>
       <div className="row-wrap">
@@ -10,7 +10,7 @@ export const AppHeader = () => {
           <span 
             className="new badge orange darken-1" 
             data-badge-caption="to do"
-          >1</span>
+          >{todosTotal}</span>
         </h4>
         <div>
           <button className="waves-effect waves-light btn light-blue lighten-1">

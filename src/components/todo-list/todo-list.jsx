@@ -1,20 +1,20 @@
 import React from 'react';
 import './todo-list.css';
 
-export const TodoList = () => {
+import TodoListItem from '../todo-list-item';
+
+export const TodoList = ({todos}) => {
   return (
     <ul className="collection list">
-      <li className="collection-item item">
-        <span>Apple</span>
-        <div>
-          <button className="secondary-content btn-icon">
-            <i className="material-icons">delete_outline</i>
-          </button>
-          <button className="secondary-content btn-icon">
-            <i className="material-icons">priority_high</i>
-          </button>
-        </div>
-      </li>
+      {todos.map(todo => {
+        const {id, ...todoData} = todo;
+
+        return (
+          <li className="collection-item item" key={id}>
+            <TodoListItem {...todoData} />
+          </li>
+        )
+      })}
     </ul>
   );
 }

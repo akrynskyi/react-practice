@@ -7,19 +7,33 @@ import AddTodo from './components/add-todo';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
     this.state = {
-      todos: []
+      todos: [
+        {id: 1, name: 'Watch video', complete: true, important: false},
+        {id: 2, name: 'Have a breakfast', complete: false, important: true},
+      ]
     };
+  }
+
+  addItem = (item) => {
+    this.setState(({todos}) => ({ todos: [...todos, item] }));
   }
 
   render() {
     return (
       <div className="container view">
-        <AppHeader />
-        <TodoList />
-        <AddTodo />
+        <AppHeader 
+          todosTotal={this.state.todos.length}
+        />
+        <TodoList 
+          todos={this.state.todos} 
+        />
+        <AddTodo 
+          onItemAdded={this.addItem}
+        />
       </div>
     );
   }
