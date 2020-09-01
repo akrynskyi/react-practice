@@ -1,7 +1,9 @@
 import React from 'react';
 import './app-header.css';
 
-export const AppHeader = ({todosTotal}) => {
+import TodoItemsFilter from '../todo-items-filter';
+
+export const AppHeader = ({todosTotal, completeTotal, onFilter, onSearch}) => {
   return (
     <>
       <div className="row-wrap">
@@ -10,24 +12,16 @@ export const AppHeader = ({todosTotal}) => {
           <span 
             className="new badge orange darken-1" 
             data-badge-caption="to do"
-          >{todosTotal}</span>
+          >{todosTotal - completeTotal}</span>
+          <span 
+            className="new badge green darken-1" 
+            data-badge-caption="complete"
+          >{completeTotal}</span>
         </h4>
-        <div>
-          <button className="waves-effect waves-light btn light-blue lighten-1">
-            All
-          </button>
-          <button className="waves-effect waves-light btn light-blue lighten-1">
-            Complete
-          </button>
-          <button className="waves-effect waves-light btn light-blue lighten-1">
-            Important
-          </button>
-          <div className="fixed-action-btn">
-            <button className="btn-floating btn-large light-blue lighten-1">
-              <i className="large material-icons">search</i>
-            </button>
-          </div>
-        </div>
+        <TodoItemsFilter 
+          filterItems={onFilter} 
+          searchItems={onSearch}
+        />
       </div>
       <div className="divider"></div>
     </>
