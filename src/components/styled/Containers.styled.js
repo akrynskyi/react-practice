@@ -11,6 +11,6 @@ export const FlexContainer = styled(Container)`
   display: flex;
   align-items: center;
   flex-direction: ${props => props.column ? 'column' : 'row'};
-  min-height: ${props => props.fullscreen ? 'calc(100vh - 56px)' : 'auto'};
+  min-height: ${props => props.fullscreen ? 'calc(100vh - 57px)' : 'auto'};
   justify-content: ${props => props.justify ? props.justify : 'flex-start'};
 `;
