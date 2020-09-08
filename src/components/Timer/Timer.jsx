@@ -13,26 +13,26 @@ export const Timer = () => {
     return val < 10 ? `0${val}` : `${val}`;
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = moment().valueOf();
-      const t = moment.duration(endtime - now, 'milliseconds');
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const now = moment().valueOf();
+  //     const t = moment.duration(endtime - now, 'milliseconds');
 
-      const h = format(moment.duration(t).hours());
-      const m = format(moment.duration(t).minutes());
-      const s = format(moment.duration(t).seconds());
+  //     const h = format(moment.duration(t).hours());
+  //     const m = format(moment.duration(t).minutes());
+  //     const s = format(moment.duration(t).seconds());
       
-      setTimer({h, m, s});
+  //     setTimer({h, m, s});
 
-      console.log('tick');
+  //     // console.log('tick');
 
-      if (endtime < now) {
-        clearInterval(interval);
-      }
-    }, 1000);
+  //     if (endtime < now) {
+  //       clearInterval(interval);
+  //     }
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, [endtime]);
 
   return (
     <TimerContainer>

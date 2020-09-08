@@ -20,3 +20,27 @@ export const Label = styled.p`
   margin-top: 8px;
   color: #717171;
 `;
+
+export const WithDropdown = styled.div`
+  position: relative;
+`;
+
+export const Dropdown = styled.div`
+  position: absolute;
+  background-color: #ccc;
+  width: 370px;
+  padding: 25px 20px;
+  margin-top: 10px;
+  border-radius: 4px;
+  left: 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    border: 8px solid transparent;
+    border-top-color: #ccc;
+    bottom: 100%;
+    left: 25px;
+    transform: rotate(180deg);
+  }
+`;
