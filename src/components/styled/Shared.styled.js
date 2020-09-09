@@ -33,6 +33,7 @@ export const Dropdown = styled.div`
   margin-top: 10px;
   border-radius: 4px;
   left: 0;
+  z-index: 20;
 
   &::after {
     content: "";

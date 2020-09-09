@@ -14,3 +14,11 @@ export const FlexContainer = styled(Container)`
   min-height: ${props => props.fullscreen ? 'calc(100vh - 57px)' : 'auto'};
   justify-content: ${props => props.justify ? props.justify : 'flex-start'};
 `;
+
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  grid-gap: 40px;
+  margin: 60px 0px;
+`;

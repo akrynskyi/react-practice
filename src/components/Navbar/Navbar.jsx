@@ -11,7 +11,7 @@ import {
 import TimerForm from '../TimerForm';
 
 export const Navbar = () => {
-  const { form, toggleForm } = useContext(TimerServiceContext);
+  const { dropdown, toggleDropdown } = useContext(TimerServiceContext);
 
   const createTimerDropdown = (
     <Dropdown>
@@ -23,10 +23,10 @@ export const Navbar = () => {
     <Nav>
       <FlexContainer>
         <WithDropdown>
-          <ButtonTransparent onClick={toggleForm}>
+          <ButtonTransparent onClick={toggleDropdown}>
             New timer
           </ButtonTransparent>
-          { form && createTimerDropdown }
+          { dropdown && createTimerDropdown }
         </WithDropdown>
       </FlexContainer>
     </Nav>

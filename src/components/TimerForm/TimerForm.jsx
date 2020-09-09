@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import * as moment from 'moment';
 
 import { 
   Row, 
@@ -8,26 +10,30 @@ import {
   FormControl, 
   InputField 
 } from '../styled';
+import { TimerServiceContext } from '../../services/timer-service';
 
 export const TimerForm = () => {
   const [name, setName] = useState('New timer');
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
 
+  const { addTimer } = useContext(TimerServiceContext);
+
   const submitHandle = (e) => {
     e.preventDefault();
 
     const hoursToSec = hours * 60 * 60;
     const minutesToSec = minutes * 60;
-    const time = hoursToSec + minutesToSec;
+    const endtime = moment().seconds(hoursToSec + minutesToSec).valueOf();
 
     const newTimer = {
-      id: Date.now(),
+      id: uuidv4(),
       name,
-      time
+      endtime
     };
     
     console.log(newTimer);
+    addTimer(newTimer);
   };
 
   const onMinutesChange = (e) => {
