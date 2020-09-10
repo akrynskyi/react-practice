@@ -5,6 +5,7 @@ export const Container = styled.div`
   margin: 0 auto;
   max-width: 1280px;
   padding: 0px 20px;
+  min-height: ${({ minheight }) => minheight ? minheight : 'auto'};
 `;
 
 export const FlexContainer = styled(Container)`
@@ -17,7 +18,7 @@ export const FlexContainer = styled(Container)`
 
 export const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(${({ repeat }) => repeat ? repeat : '3, 1fr'});
   justify-items: center;
   grid-gap: 40px;
   margin: 60px 0px;

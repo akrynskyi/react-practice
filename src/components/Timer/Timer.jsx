@@ -37,7 +37,6 @@ export const Timer = ({name, endtime}) => {
 
     interval = setInterval(() => {
       const { now, ...time } = calcTime();
-
       setTimer(time);
 
       if (endtime < now) {

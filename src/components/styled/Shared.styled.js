@@ -12,7 +12,7 @@ export const Row = styled.div`
 export const Column = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: ${({ contentRow }) => contentRow ? 'row' : 'column'};
 `;
 
 export const Label = styled.p`

@@ -33,7 +33,7 @@ export const TimerBody = styled.div`
 `;
 
 export const TimerUnit = styled.div`
-  font-family: 'Digital-7', 'Roboto';
+  font-family: "Digital-7", "Roboto";
   position: relative;
   width: 65px;
   height: 80px;
