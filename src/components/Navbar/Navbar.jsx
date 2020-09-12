@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import {
   Nav, 
   FlexContainer, 
-  ButtonTransparent, 
+  Button,
   WithDropdown, 
   Dropdown,
   Column
@@ -42,15 +42,15 @@ export const Navbar = () => {
 
   const createButton = (
     <WithDropdown>
-      <ButtonTransparent onClick={toggleDropdown}>
+      <Button bgc="#cc4343" onClick={toggleDropdown}>
         New timer
-      </ButtonTransparent>
+      </Button>
       { dropdown && createTimerDropdown }
     </WithDropdown>
   );
 
   return (
-    <Nav>
+    <Nav bgc={timersPage ? '#212121' : '#424242'}>
       <FlexContainer justify="space-between">
         <Column contentRow>
           { timersPage && createButton }

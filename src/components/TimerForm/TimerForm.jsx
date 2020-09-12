@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
 
@@ -8,7 +8,9 @@ import {
   BaseForm, 
   FormLabel, 
   FormControl, 
-  InputField 
+  InputField,
+  WithTooltip,
+  Tooltip
 } from '../styled';
 import { TimerServiceContext } from '../../services/timer-service';
 
@@ -16,11 +18,23 @@ export const TimerForm = () => {
   const [name, setName] = useState('New timer');
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
-
+  const [tooltipActive, setTooltipActive] = useState(false);
   const { addTimer } = useContext(TimerServiceContext);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setTooltipActive(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [tooltipActive]);
 
   const submitHandle = (e) => {
     e.preventDefault();
+
+    if (!hours && !minutes) {
+      setTooltipActive(true);
+      return;
+    };
+
+    setTooltipActive(false);
 
     const hoursToSec = hours * 60 * 60;
     const minutesToSec = minutes * 60;
@@ -90,9 +104,14 @@ export const TimerForm = () => {
         mt="15px"
         justify="flex-end"
       >
-        <Button 
-          minheight="40px"
-        >Create timer</Button>
+        <WithTooltip>
+          <Button 
+            minheight="40px"
+          >Create timer</Button>
+          <Tooltip active={tooltipActive}>
+            You didn't set a timer
+          </Tooltip>
+        </WithTooltip>
       </Row>
     </BaseForm>
   );

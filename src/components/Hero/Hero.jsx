@@ -1,99 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import * as moment from 'moment';
+import { format } from '../Timer';
 
-import styled, { keyframes } from 'styled-components';
-import { Container } from '../styled';
-
-const colr = keyframes`
-  0% {
-    color: #2982ff;
-    text-shadow: 0px 0px 5px #000;
-  }
-
-  50% {
-    color: #cc4343;
-    text-shadow: 0px 0px 5px #ff0000;
-  }
-`;
-
-const Cube = styled.figure`
-  cursor: pointer;
-  width: 210px;
-  height: 210px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-style: preserve-3d;
-  transform:
-    translate(-50%, -50%)
-    rotateX(-35deg)
-    rotateY(45deg);
-  transition: all 2s linear;
-
-  &:hover {
-    transform:
-      translate(-50%, -50%)
-      rotateX(-50deg)
-      rotateY(45deg);
-  }
-`;
-
-const Face = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  transform-origin: center;
-  background-color: #000;
-  text-align: center;
-`;
-
-const FaceUnits = styled.p`
-  font-family: "Digital-7";
-  font-size: 180px;
-  line-height: 180px;
-  margin-top: 20px;
-  color: #2982ff;
-  text-shadow: 0px 0px 5px #000;
-  animation: ${colr} 10s infinite;
-`;
-
-const FaceFront = styled(Face)`
-  background-color: #111;
-  transform: 
-    translate3d(0, 0, 105px);
-`;
-
-const FaceLeft = styled(Face)`
-  background-color: #151515;
-  transform:
-    rotateY(-90deg)
-    translate3d(0, 0, 105px);
-`;
-
-const FaceTop = styled(Face)`
-  background-color: #222;
-  transform:
-    rotateX(90deg)
-    translate3d(0, 0, 105px);
-`;
-
-const Background = styled.div`
-  min-height: calc(100vh - 57px);
-  background-color: #424242;
-`
+import { 
+  Container, 
+  Cube,
+  FaceUnits, 
+  FaceFront, 
+  FaceLeft, 
+  FaceTop, 
+  Background 
+} from '../styled';
 
 export const Hero = () => {
+  const [clock, setClock] = useState({h: '00', m: '00', s: '00'});
+
+  const setupClock = useCallback(() => {
+    const h = format(moment().hours());
+    const m = format(moment().minutes());
+    const s = format(moment().seconds());
+
+    setClock({h, m, s});
+  }, []);
+
+  useEffect(() => {
+    setupClock();
+    const int = setInterval(setupClock, 1000);
+    
+    return () => clearInterval(int);
+  }, [setupClock]);
+
   return (
     <Background>
       <Container>
         <Cube>
           <FaceTop>
-            <FaceUnits>00</FaceUnits>
+            <FaceUnits>{clock.s}</FaceUnits>
           </FaceTop>
           <FaceFront>
-            <FaceUnits>00</FaceUnits>
+            <FaceUnits>{clock.m}</FaceUnits>
           </FaceFront>
           <FaceLeft>
-            <FaceUnits>00</FaceUnits>
+            <FaceUnits>{clock.h}</FaceUnits>
           </FaceLeft>
         </Cube>
       </Container>

@@ -38,4 +38,9 @@ export const ButtonIcon = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all .2s linear;
+
+  &:hover {
+    color: #ccc;
+  }
 `;

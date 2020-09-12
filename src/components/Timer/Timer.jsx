@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import * as moment from 'moment';
+import { format } from '.';
 
 import { Button, ButtonIcon } from '../styled';
 import { Row, Column, Label } from '../styled';
@@ -10,8 +11,6 @@ export const Timer = ({name, endtime}) => {
   const [start, setStart] = useState(false);
 
   const calcTime = useCallback(() => {
-    const format = (val) => (val < 10 ? `0${val}` : `${val}`);
-    
     const now = start ? moment().valueOf() : moment().seconds(0).valueOf();
     const t = moment.duration(endtime - now, 'milliseconds');
   
