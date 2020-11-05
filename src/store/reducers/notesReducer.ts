@@ -5,13 +5,13 @@ export interface Note {
   title: string,
   body: string,
   date?: number
-};
+}
 
 export interface NotesState {
   loading: false,
   notes: Note[],
   error: any | null,
-};
+}
 
 const initialState: NotesState = {
   loading: false,

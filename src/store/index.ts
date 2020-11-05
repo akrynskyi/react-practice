@@ -8,7 +8,7 @@ import { NotesActions } from './actions/notesActions';
 
 export interface AppState {
   notes: NotesState
-};
+}
 
 const epicMiddleware = createEpicMiddleware<NotesActions>();
 

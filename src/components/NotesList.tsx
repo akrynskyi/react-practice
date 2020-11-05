@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { selectNotes } from '../store/index';
+import { selectNotes } from '../store';
 import { Note } from '../store/reducers/notesReducer';
 import {
-  List, 
-  ListSubheader, 
-  ListItem, 
-  ListItemText, 
-  ListItemSecondaryAction, 
-  Tooltip, 
-  Fade, 
-  IconButton, 
+  Fade,
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  ListSubheader,
+  makeStyles,
+  Tooltip,
   Typography,
-  makeStyles
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -24,11 +24,11 @@ const useStyles = makeStyles({
       width: '0.4em'
     },
     '&::-webkit-scrollbar-track': {
-      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.0)',
-      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.0)'
+      boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0)'
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(0,0,0,.1)',
+      backgroundColor: 'rgba(0, 0, 0, .1)',
       outline: 'none'
     }
   },

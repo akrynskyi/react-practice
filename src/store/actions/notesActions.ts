@@ -6,11 +6,11 @@ export enum NotesActionTypes {
   fetchNotes = '[NOTES] Fetch notes',
   fetchNotesSuccess = '[NOTES] Fetch notes success',
   fetchNotesFailure = '[NOTES] Fetch notes failure',
-};
+}
 
 interface CreateNoteAction extends Action {
   payload: Note,
-};
+}
 
 interface FetchNotes extends Action {
   payload: null
@@ -18,7 +18,7 @@ interface FetchNotes extends Action {
 
 interface FetchNotesSuccess extends Action {
   payload: Note[],
-};
+}
 
 interface FetchNotesFailure extends Action {
   payload: any
