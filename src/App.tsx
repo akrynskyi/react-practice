@@ -1,22 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, Container, CssBaseline, } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { fetchNotes } from './store/actions/notesActions';
 import { DrawerNav } from './components/DrawerNav';
 import { Route } from 'react-router-dom';
 import { NotesPage } from './pages/NotesPage';
 import { TablePage } from './pages/TablePage';
+import { Notification } from './components/Notification';
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchNotes());
-  }, [dispatch]);
-
   return (
     <>
       <CssBaseline />
+      <Notification />
       <Container maxWidth="md">
         <DrawerNav />
         <Box my={10}>
