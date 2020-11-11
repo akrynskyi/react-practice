@@ -33,6 +33,13 @@ export const CreateNote: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const expandedToggle = () => setExpanded((state) => !state);
 
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    const { noteTitle: titleEl, noteBody: bodyEl } = e.target as HTMLFormElement;
+    console.log(titleEl.value, bodyEl.value);
+  };
+
   return (
     <>
       <Box className={cls.box}>
@@ -58,6 +65,7 @@ export const CreateNote: React.FC = () => {
         <Paper
           className={cls.paper}
           component="form"
+          onSubmit={onSubmit}
         >
           <Typography className={cls.heading}>
             Create new note
@@ -67,6 +75,7 @@ export const CreateNote: React.FC = () => {
             label="Title"
             margin="dense"
             variant="outlined"
+            name="noteTitle"
           />
           <TextField
             rows={4}
@@ -75,8 +84,9 @@ export const CreateNote: React.FC = () => {
             label="Note"
             margin="normal"
             variant="outlined"
+            name="noteBody"
           />
-          <Button>
+          <Button type="submit">
             Create
           </Button>
         </Paper>

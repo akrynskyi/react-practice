@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Avatar } from '@material-ui/core';
 import { AgGridReact } from 'ag-grid-react';
-import { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
-import { HighlightField } from '../components/HighlightField';
+import { ColDef, GridReadyEvent } from 'ag-grid-community';
+import { HighlightField, AvatarComponent } from '../components/grid';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
@@ -25,20 +24,6 @@ interface User {
     catchPhrase: string,
   },
 }
-
-const AvatarRenderer = ({ value }: ICellRendererParams) => {
-  return (
-    <Avatar
-      style={{
-        width: 25,
-        height: 25,
-        fontSize: 12,
-      }}
-    >
-      {value.charAt(0)}
-    </Avatar>
-  );
-};
 
 const GridPage: React.FC = () => {
   const [rowData, setRowData] = useState<User[] | []>([]);
@@ -103,16 +88,14 @@ const GridPage: React.FC = () => {
   return (
     <div
       className="ag-theme-alpine-dark"
-      style={{
-        height: '400px'
-      }}
+      style={{ height: '400px' }}
     >
       <AgGridReact
         rowData={rowData}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         frameworkComponents={{
-          avatarComponent: AvatarRenderer,
+          avatarComponent: AvatarComponent,
           highlightFieldComponent: HighlightField
         }}
         onGridReady={onGridReady}

@@ -4,6 +4,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectNotificationMessage, selectNotificationVisible } from '../store';
 import { hideNotification, undoAction } from '../store/actions/notificationActions';
 
+interface NotificationActionProps {
+  handleClose: (undo?: boolean) => any
+}
+
+const NotificationAction: React.FC<NotificationActionProps> = ({handleClose}) => {
+  return (
+    <>
+      <Button
+        color="primary"
+        size="small"
+        onClick={handleClose(true)}
+      >
+        UNDO
+      </Button>
+      <Button
+        color="secondary"
+        size="small"
+        onClick={handleClose()}
+      >
+        CLOSE
+      </Button>
+    </>
+  );
+};
+
 export const Notification = () => {
   const dispatch = useDispatch();
   const visible = useSelector(selectNotificationVisible);
@@ -28,28 +53,8 @@ export const Notification = () => {
       autoHideDuration={4000}
       onClose={handleClose()}
       TransitionComponent={Slide}
-      action={
-        <>
-          <Button
-            color="primary"
-            size="small"
-            onClick={handleClose(true)}
-          >
-            UNDO
-          </Button>
-          <Button
-            color="secondary"
-            size="small"
-            onClick={handleClose()}
-          >
-            CLOSE
-          </Button>
-        </>
-      }
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
-      }}
+      action={<NotificationAction handleClose={handleClose} />}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     />
   );
 };

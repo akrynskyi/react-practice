@@ -3,8 +3,8 @@ import { ICellRendererParams } from 'ag-grid-community';
 import { IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { showNotification } from '../store/actions/notificationActions';
-import { selectDataId, selectUndoAction } from '../store';
+import { showNotification } from '../../store/actions/notificationActions';
+import { selectDataId, selectUndoAction } from '../../store';
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const HighlightField = ({ value, data }: ICellRendererParams) => {
+const HighlightField = ({ value, data }: ICellRendererParams) => {
   const { id } = data;
   const cls = useStyles();
   const dispatch = useDispatch();
@@ -56,3 +56,5 @@ export const HighlightField = ({ value, data }: ICellRendererParams) => {
     </>
   );
 };
+
+export default HighlightField;
