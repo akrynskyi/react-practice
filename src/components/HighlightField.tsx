@@ -9,7 +9,13 @@ import { selectDataId, selectUndoAction } from '../store';
 const useStyles = makeStyles((theme) => ({
   btn: {
     marginRight: theme.spacing(4)
-  }
+  },
+  default: {
+    color: '#fff'
+  },
+  highlighted: {
+    color: '#ffea00'
+  },
 }));
 
 export const HighlightField = ({ value, data }: ICellRendererParams) => {
@@ -32,7 +38,7 @@ export const HighlightField = ({ value, data }: ICellRendererParams) => {
     if (undoAction && (dataId === id)) {
       setHighlight(false);
     }
-  }, [undoAction, dataId]);
+  }, [undoAction, dataId, id]);
 
   return (
     <>
@@ -42,13 +48,9 @@ export const HighlightField = ({ value, data }: ICellRendererParams) => {
         disabled={highlight}
         onClick={onHighlight}
       >
-        <span className="material-icons">
-          flag
-        </span>
+        <span className="material-icons">flag</span>
       </IconButton>
-      <span
-        style={{ color: highlight ? '#ffea00' : '#fff' }}
-      >
+      <span className={highlight ? cls.highlighted : cls.default}>
         {value}
       </span>
     </>

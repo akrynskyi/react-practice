@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { Avatar } from '@material-ui/core';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
-import { Avatar } from '@material-ui/core';
 import { HighlightField } from '../components/HighlightField';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -40,7 +40,7 @@ const AvatarRenderer = ({ value }: ICellRendererParams) => {
   );
 };
 
-export const TablePage: React.FC = () => {
+const GridPage: React.FC = () => {
   const [rowData, setRowData] = useState<User[] | []>([]);
 
   const columnDefs: ColDef[] = [
@@ -120,3 +120,5 @@ export const TablePage: React.FC = () => {
     </div>
   );
 };
+
+export default GridPage;

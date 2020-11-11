@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
-import { Paper, Typography } from '@material-ui/core';
-import { NotesList } from '../components/NotesList';
-import { CreateNote } from '../components/CreateNote';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box, CircularProgress, Paper, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { selectNotes, selectNotesLoading } from '../store';
 import { fetchNotes } from '../store/actions/notesActions';
-import { selectNotes } from '../store';
+import { NotesList } from '../components/NotesList';
+import { PageTitle } from '../components/PageTitle';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    text: {
-      padding: theme.spacing(8, 8, 0),
-    },
-  })
-);
+const useStyles = makeStyles({
+  contentCentered: {
+    display: 'flex',
+    justifyContent: 'center',
+  }
+});
 
-export const NotesPage: React.FC = () => {
-  const cls = useStyles();
+const NotesPage: React.FC = () => {
   const dispatch = useDispatch();
   const notes = useSelector(selectNotes);
+  const loading = useSelector(selectNotesLoading);
+  const cls = useStyles();
 
   useEffect(() => {
     if (notes.length) return;
@@ -27,14 +28,27 @@ export const NotesPage: React.FC = () => {
 
   return (
     <Paper>
-      <Typography
-        gutterBottom
-        className={cls.text}
-      >
-        Your notes
-      </Typography>
-      <NotesList />
-      <CreateNote />
+      <PageTitle>Your notes</PageTitle>
+      {
+        loading
+          ? (
+              <Box
+                py={25}
+                className={cls.contentCentered}
+              >
+                <CircularProgress />
+              </Box>
+            )
+          : notes.length
+          ? <NotesList />
+          : (
+              <Typography align="center">
+                You have no notes yet...
+              </Typography>
+            )
+      }
     </Paper>
   );
 };
+
+export default NotesPage;

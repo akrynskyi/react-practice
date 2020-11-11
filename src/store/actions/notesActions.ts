@@ -1,4 +1,3 @@
-import { Action } from "redux";
 import { Note } from "../reducers/notesReducer";
 
 export enum NotesActionTypes {
@@ -8,28 +7,45 @@ export enum NotesActionTypes {
   fetchNotesFailure = '[NOTES] Fetch notes failure',
 }
 
-interface CreateNoteAction extends Action {
+interface CreateNote {
+  type: NotesActionTypes.createNote,
   payload: Note,
 }
 
-interface FetchNotes extends Action {
-  payload: null
+interface FetchNotes {
+  type: NotesActionTypes.fetchNotes,
 }
 
-interface FetchNotesSuccess extends Action {
+interface FetchNotesSuccess {
+  type: NotesActionTypes.fetchNotesSuccess,
   payload: Note[],
 }
 
-interface FetchNotesFailure extends Action {
+interface FetchNotesFailure {
+  type: NotesActionTypes.fetchNotesFailure,
   payload: any
 }
 
-export const createNote = (payload: Note) => ({ type: NotesActionTypes.createNote, payload });
-export const fetchNotes = () => ({ type: NotesActionTypes.fetchNotes });
-export const fetchNotesSuccess = (payload: Note[]) => ({ type: NotesActionTypes.fetchNotesSuccess, payload });
-export const fetchNotesFailure = (payload: any) => ({ type: NotesActionTypes.fetchNotesFailure, payload });
+export const createNote = (payload: Note): CreateNote => ({
+  type: NotesActionTypes.createNote,
+  payload
+});
 
-export type NotesActions = CreateNoteAction
+export const fetchNotes = (): FetchNotes => ({
+  type: NotesActionTypes.fetchNotes
+});
+
+export const fetchNotesSuccess = (payload: Note[]): FetchNotesSuccess => ({
+  type: NotesActionTypes.fetchNotesSuccess,
+  payload
+});
+
+export const fetchNotesFailure = (payload: any): FetchNotesFailure => ({
+  type: NotesActionTypes.fetchNotesFailure,
+  payload
+});
+
+export type NotesActions = CreateNote
   | FetchNotes
   | FetchNotesSuccess 
   | FetchNotesFailure;

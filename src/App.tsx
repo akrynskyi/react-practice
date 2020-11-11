@@ -1,24 +1,31 @@
-import React from 'react';
-import { Box, Container, CssBaseline, } from '@material-ui/core';
-import { DrawerNav } from './components/DrawerNav';
+import React, { Suspense } from 'react';
 import { Route } from 'react-router-dom';
-import { NotesPage } from './pages/NotesPage';
-import { TablePage } from './pages/TablePage';
+import { Box, Container, CssBaseline, } from '@material-ui/core';
+
+import { DrawerNav } from './components/DrawerNav';
 import { Notification } from './components/Notification';
+import { LoadingFallback } from './components/LoadingFallback';
+const NotesPage = React.lazy(() => import('./pages/NotesPage'));
+const GridPage = React.lazy(() => import('./pages/GridPage'));
 
 function App() {
   return (
-    <>
+    <Suspense fallback={<LoadingFallback />}>
       <CssBaseline />
-      <Notification />
       <Container maxWidth="md">
-        <DrawerNav />
         <Box my={10}>
-          <Route path="/" component={NotesPage} exact />
-          <Route path="/table" component={TablePage} />
+          <Route path="/" exact>
+            <NotesPage />
+          </Route>
+
+          <Route path="/grid">
+            <GridPage />
+          </Route>
         </Box>
+        <DrawerNav />
+        <Notification />
       </Container>
-    </>
+    </Suspense>
   );
 }
 

@@ -12,8 +12,8 @@ import {
   ListSubheader,
   makeStyles,
   Tooltip,
-  Typography,
 } from '@material-ui/core';
+import { CreateNote } from './CreateNote';
 
 const useStyles = makeStyles({
   list: {
@@ -70,12 +70,11 @@ export const NotesList: React.FC = () => {
   );
 
   return (
-    <List className={cls.list}>
-      {
-        notes.length 
-        ? notes.map(renderNotes)
-        : <Typography align="center">You have no notes yet...</Typography>
-      }
-    </List>
+    <>
+      <List className={cls.list}>
+        {notes.map(renderNotes)}
+      </List>
+      <CreateNote />
+    </>
   );
 };

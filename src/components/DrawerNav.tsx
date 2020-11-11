@@ -29,9 +29,9 @@ export const DrawerNav: React.FC = () => {
       to: '/',
     },
     {
-      title: 'Table',
+      title: 'Grid',
       icon: 'grid_on',
-      to: '/table',
+      to: '/grid',
     }
   ];
 

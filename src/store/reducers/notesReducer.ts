@@ -19,7 +19,9 @@ const initialState: NotesState = {
   error: null,
 };
 
-export const notesReducer = (state = initialState, action: NotesActions) => {
+export const notesReducer = (
+  state = initialState,
+  action: NotesActions) => {
   switch (action.type) {
     case NotesActionTypes.createNote:
       return {

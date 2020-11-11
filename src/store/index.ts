@@ -32,7 +32,15 @@ export const store = createStore(
 
 epicMiddleware.run(epics);
 
+/*
+  Notes selectors
+ */
 export const selectNotes = ({ notes }: AppState) => notes.notes;
+export const selectNotesLoading = ({ notes }: AppState) => notes.loading;
+
+/*
+  Notification selectors
+ */
 export const selectNotificationVisible = ({ notification }: AppState) => notification.visible;
 export const selectNotificationMessage = ({ notification }: AppState) => notification.message;
 export const selectUndoAction = ({ notification }: AppState) => notification.undo;
