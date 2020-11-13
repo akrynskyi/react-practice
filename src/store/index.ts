@@ -1,27 +1,15 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { combineEpics, createEpicMiddleware } from 'redux-observable';
+import { createEpicMiddleware } from 'redux-observable';
 
-import { notesReducer, NotesState } from './reducers/notesReducer';
-import { fetchNotesEpic } from './epics/fetchNotesEpic';
-import { NotesActions } from './actions/notesActions';
-import { notificationReducer, NotificationState } from './reducers/notificationReducer';
+import epics from './epics';
+import reducers, { AppState } from './reducers';
+import ActionTypes from './actions';
+import DataService from '../services/DataService';
 
-export interface AppState {
-  notes: NotesState,
-  notification: NotificationState
-}
-
-const epicMiddleware = createEpicMiddleware<NotesActions>();
-
-const reducers = combineReducers({
-  notes: notesReducer,
-  notification: notificationReducer,
+const epicMiddleware = createEpicMiddleware<ActionTypes, ActionTypes, AppState>({
+  dependencies: new DataService()
 });
-
-const epics = combineEpics(
-  fetchNotesEpic
-);
 
 export const store = createStore(
   reducers,
@@ -45,3 +33,8 @@ export const selectNotificationVisible = ({ notification }: AppState) => notific
 export const selectNotificationMessage = ({ notification }: AppState) => notification.message;
 export const selectUndoAction = ({ notification }: AppState) => notification.undo;
 export const selectDataId = ({ notification }: AppState) => notification.dataId;
+
+/*
+  Users selectors
+ */
+export const selectUsers = ({ users }: AppState) => users.users;

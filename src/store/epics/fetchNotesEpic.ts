@@ -1,16 +1,19 @@
 import { Epic, ofType } from "redux-observable";
-import { mergeMap, map, catchError } from 'rxjs/operators';
-import { ajax } from 'rxjs/ajax';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from "rxjs";
 
-import { fetchNotesSuccess, fetchNotesFailure, NotesActionTypes, NotesActions } from "../actions/notesActions";
-import { Note } from "../reducers/notesReducer";
+import { Note } from '../reducers/notesReducer';
+import { AppState } from '../reducers';
+import ActionTypes from '../actions';
+import DataService from '../../services/DataService';
+import { fetchNotesFailure, fetchNotesSuccess, NotesActionTypes } from "../actions/notesActions";
 
-export const fetchNotesEpic: Epic<NotesActions> = (action$) =>
+export const fetchNotesEpic: Epic<ActionTypes, ActionTypes, AppState, DataService> = (
+  action$, store$, api) =>
   action$.pipe(
     ofType(NotesActionTypes.fetchNotes),
-    mergeMap(() => 
-      ajax.getJSON<Note[]>('https://jsonplaceholder.typicode.com/posts').pipe(
+    mergeMap(() =>
+      api.fetchData<Note[]>('posts').pipe(
         map((resp) => fetchNotesSuccess(resp)),
         catchError((error) => of(fetchNotesFailure(error)))
       )

@@ -1,39 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
-import { HighlightField, AvatarComponent } from '../components/grid';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUsers } from '../store';
+import { fetchUsers } from '../store/actions/usersActions';
+
+import { AvatarComponent, HighlightField } from '../components/grid';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 
-interface User {
-  id: number,
-  name: string,
-  username: string,
-  email: string,
-  address: {
-    street: string,
-    suite: string,
-    city: string,
-    zipcode: string,
-  },
-  phone: string,
-  website: string,
-  company: {
-    name: string,
-    catchPhrase: string,
-  },
-}
 
 const GridPage: React.FC = () => {
-  const [rowData, setRowData] = useState<User[] | []>([]);
+  const dispatch = useDispatch();
+  const users = useSelector(selectUsers);
+  // const [gridApi, setGridApi] = useState<GridApi | null>(null);
 
   const columnDefs: ColDef[] = [
     {
       headerName: 'Name',
       field: 'name',
-      width: 250,
+      width: 450,
       cellRenderer: 'highlightFieldComponent',
+      rowDrag: true
     },
     {
       headerName: 'Avatar',
@@ -74,24 +63,24 @@ const GridPage: React.FC = () => {
   const defaultColDef = {
     sortable: true,
     filter: true,
-    resizable: true
+    resizable: true,
   };
 
-  const onGridReady = async ({ api }: GridReadyEvent) => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    const users: User[] = await response.json();
-
-    setRowData(users);
+  const onGridReady = ({ api }: GridReadyEvent) => {
+    // setGridApi(api);
+    dispatch(fetchUsers.request());
     api.sizeColumnsToFit();
   };
 
   return (
     <div
       className="ag-theme-alpine-dark"
-      style={{ height: '400px' }}
+      style={{ height: '500px' }}
     >
       <AgGridReact
-        rowData={rowData}
+        rowData={users}
+        immutableData={true}
+        getRowNodeId={(data) => data.id}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         frameworkComponents={{
@@ -99,6 +88,8 @@ const GridPage: React.FC = () => {
           highlightFieldComponent: HighlightField
         }}
         onGridReady={onGridReady}
+        rowDragManaged={true}
+        animateRows={true}
       />
     </div>
   );
