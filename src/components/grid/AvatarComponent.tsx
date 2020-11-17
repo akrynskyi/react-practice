@@ -11,7 +11,7 @@ const AvatarRenderer = ({ value }: ICellRendererParams) => {
         fontSize: 12,
       }}
     >
-      {value.charAt(0)}
+      {value.charAt(0).toUpperCase()}
     </Avatar>
   );
 };

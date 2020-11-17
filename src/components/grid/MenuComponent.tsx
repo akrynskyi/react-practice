@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const HighlightField = ({ value, data }: ICellRendererParams) => {
+const MenuComponent = ({ value, data }: ICellRendererParams) => {
   const { id } = data;
   const cls = useStyles();
   const dispatch = useDispatch();
@@ -69,13 +69,18 @@ const HighlightField = ({ value, data }: ICellRendererParams) => {
         open={!!anchorEl}
         onClose={closeMenu}
       >
-        <MenuItem onClick={onHighlight} disabled={highlight}>
+        <MenuItem
+          onClick={onHighlight}
+          disabled={highlight}
+        >
           <ListItemIcon className={cls.icon}>
             <span className="material-icons">flag</span>
           </ListItemIcon>
           <ListItemText primary="Highlight"/>
         </MenuItem>
-        <MenuItem onClick={onDelete}>
+        <MenuItem
+          onClick={onDelete}
+        >
           <ListItemIcon className={cls.icon}>
             <span className="material-icons">delete</span>
           </ListItemIcon>
@@ -90,4 +95,4 @@ const HighlightField = ({ value, data }: ICellRendererParams) => {
   );
 };
 
-export default HighlightField;
+export default MenuComponent;

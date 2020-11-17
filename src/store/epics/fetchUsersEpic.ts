@@ -14,7 +14,7 @@ export const fetchUsersEpic: Epic<ActionTypes, ActionTypes, AppState, DataServic
   action$.pipe(
     filter(isActionOf(fetchUsers.request)),
     switchMap(() =>
-      api.fetchData<User[]>('users').pipe(
+      api.fetchMockData<User[]>().pipe(
         map(fetchUsers.success),
         catchError(({ message }) => of(fetchUsers.failure(message)))
       )

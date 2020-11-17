@@ -1,7 +1,6 @@
 import { createAsyncAction, createAction, ActionType } from 'typesafe-actions';
 import { User } from '../reducers/usersReducer';
 
-// Todo implement multi user deletion
 enum UserActionTypes {
   fetchUsersRequest = '@@users/fetch',
   fetchUsersSuccess = '@@users/success',
@@ -22,4 +21,11 @@ export const deleteOneUser = createAction(
   (id: string) => id
 )<string>();
 
-export type UsersActions = ActionType<typeof fetchUsers | typeof deleteOneUser>;
+export const deleteManyUsers = createAction(
+  UserActionTypes.deleteManyUsers,
+  (ids: Array<number | string>) => ids
+)<Array<number | string>>();
+
+export type UsersActions = ActionType<typeof fetchUsers
+  | typeof deleteOneUser
+  | typeof deleteManyUsers>;
