@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, CircularProgress, Paper, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectNotes, selectNotesLoading } from '../store';
+import { notesSelector, selectNotesLoading } from '../store';
 import { fetchNotes } from '../store/actions/notesActions';
 import { NotesList } from '../components/NotesList';
 import { PageTitle } from '../components/PageTitle';
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 
 const NotesPage: React.FC = () => {
   const dispatch = useDispatch();
-  const notes = useSelector(selectNotes);
+  const notes = useSelector(notesSelector);
   const loading = useSelector(selectNotesLoading);
   const cls = useStyles();
 

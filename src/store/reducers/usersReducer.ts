@@ -1,5 +1,5 @@
 import { createReducer } from 'typesafe-actions';
-import { deleteManyUsers, deleteOneUser, fetchUsers, UsersActions } from '../actions/usersActions';
+import { deleteManyUsers, deleteOneUser, fetchUsers, updateUser, UsersActions } from '../actions/usersActions';
 
 export interface User {
   id: number,
@@ -36,6 +36,9 @@ const removeItemFromArray = <T extends Array<any>>(
 const removeManyItemsFromArray = (
   array: Array<any>, ids: Array<number | string>) => array.filter((item) => !ids.includes(item.id));
 
+const updateItemInArray = <TArray extends Array<TItem>, TItem extends User>(
+  array: TArray, item: TItem) => array.map((obj) => obj.id !== item.id ? obj : item)
+
 export const usersReducer = createReducer<UsersState, UsersActions>(initialState)
   .handleAction(fetchUsers.success, (state, action) => ({
     ...state,
@@ -52,4 +55,8 @@ export const usersReducer = createReducer<UsersState, UsersActions>(initialState
   .handleAction(deleteManyUsers, (state, action) => ({
     ...state,
     users: removeManyItemsFromArray(state.users, action.payload)
+  }))
+  .handleAction(updateUser, (state, action) => ({
+    ...state,
+    users: updateItemInArray<User[], User>(state.users, action.payload)
   }))

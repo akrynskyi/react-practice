@@ -1,22 +1,36 @@
 import { of } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { isActionOf } from 'typesafe-actions';
-import { filter, switchMap, map, catchError } from 'rxjs/operators';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 import ActionTypes from '../actions';
 import { AppState } from '../reducers';
-import { User } from '../reducers/usersReducer';
 import DataService from '../../services/DataService';
-import { fetchUsers } from '../actions/usersActions';
+import { fetchUsers, updateUser, userUpdated } from '../actions/usersActions';
 
-export const fetchUsersEpic: Epic<ActionTypes, ActionTypes, AppState, DataService> = (
+const fetchUsersEpic: Epic<ActionTypes, ActionTypes, AppState, DataService> = (
   action$, store$, api) =>
   action$.pipe(
     filter(isActionOf(fetchUsers.request)),
     switchMap(() =>
-      api.fetchMockData<User[]>().pipe(
+      api.fetchAllUsers().pipe(
         map(fetchUsers.success),
         catchError(({ message }) => of(fetchUsers.failure(message)))
       )
     )
   );
+
+const updateUserEpic: Epic<ActionTypes, ActionTypes, AppState, DataService> = (
+  action$, store$, api) =>
+  action$.pipe(
+    filter(isActionOf(updateUser)),
+    switchMap((action) =>
+      api.updateUser(action.payload).pipe(
+        map(() => userUpdated())
+      )
+    )
+  );
+
+const epicsMap = [fetchUsersEpic, updateUserEpic];
+
+export default epicsMap;

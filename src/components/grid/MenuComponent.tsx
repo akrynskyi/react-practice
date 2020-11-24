@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MenuComponent = ({ value, data }: ICellRendererParams) => {
+const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
   const { id } = data;
   const cls = useStyles();
   const dispatch = useDispatch();
@@ -46,6 +46,24 @@ const MenuComponent = ({ value, data }: ICellRendererParams) => {
   const onDelete = () => {
     dispatch(deleteOneUser(id));
     closeMenu();
+  };
+
+  const getPinnedTopRowId = () => {
+    const pinnedTopRow = api.getPinnedTopRow(0);
+    return pinnedTopRow ? pinnedTopRow.data.id : null;
+  };
+
+  const onRowPin = () => {
+    closeMenu();
+    const selectedRows = api.getSelectedRows();
+    const pinnedTopRowId = getPinnedTopRowId();
+
+    if (id === pinnedTopRowId) {
+      api.setPinnedTopRowData([]);
+      return;
+    }
+
+    api.setPinnedTopRowData(selectedRows);
   };
 
   useEffect(() => {
@@ -85,6 +103,14 @@ const MenuComponent = ({ value, data }: ICellRendererParams) => {
             <span className="material-icons">delete</span>
           </ListItemIcon>
           <ListItemText primary="Delete"/>
+        </MenuItem>
+        <MenuItem
+          onClick={onRowPin}
+        >
+          <ListItemIcon className={cls.icon}>
+            <span className="material-icons">push_pin</span>
+          </ListItemIcon>
+          <ListItemText primary={id !== getPinnedTopRowId() ? 'Pin row' : 'Unpin row'} />
         </MenuItem>
       </Menu>
 

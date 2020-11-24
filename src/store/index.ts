@@ -6,6 +6,8 @@ import epics from './epics';
 import reducers, { AppState } from './reducers';
 import ActionTypes from './actions';
 import DataService from '../services/DataService';
+import { createSelector } from 'reselect';
+import { NotesState } from './reducers/notesReducer';
 
 const epicMiddleware = createEpicMiddleware<ActionTypes, ActionTypes, AppState>({
   dependencies: new DataService()
@@ -23,8 +25,15 @@ epicMiddleware.run(epics);
 /*
   Notes selectors
  */
-export const selectNotes = ({ notes }: AppState) => notes.notes;
+const selectNotesState = ({ notes }: AppState) => notes;
+const selectNotes = (notes: NotesState) => notes.notes;
+
 export const selectNotesLoading = ({ notes }: AppState) => notes.loading;
+
+export const notesSelector = createSelector(
+  selectNotesState,
+  selectNotes
+);
 
 /*
   Notification selectors

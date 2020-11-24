@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { selectNotes } from '../store';
+import { notesSelector } from '../store';
 import { Note } from '../store/reducers/notesReducer';
 import {
   Fade,
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 
 export const NotesList: React.FC = () => {
   const cls = useStyles();
-  const notes = useSelector(selectNotes);
+  const notes = useSelector(notesSelector);
 
   const renderNotes = ({ id, title, body }: Note) => (
     <Fragment key={id}>

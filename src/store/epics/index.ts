@@ -1,10 +1,10 @@
 import { combineEpics } from 'redux-observable';
 import { fetchNotesEpic } from './fetchNotesEpic';
-import { fetchUsersEpic } from './fetchUsersEpic';
+import userEpics from './fetchUsersEpic';
 
 const epics = combineEpics(
   fetchNotesEpic,
-  fetchUsersEpic
+  ...userEpics
 );
 
 export default epics;
