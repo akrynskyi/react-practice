@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ICellRendererParams } from 'ag-grid-community';
-import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { showNotification } from '../../store/actions/notificationActions';
+import { ICellRendererParams } from 'ag-grid-community';
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
+
 import { selectDataId, selectUndoAction } from '../../store';
 import { deleteOneUser } from '../../store/actions/usersActions';
+import { showNotification } from '../../store/actions/notificationActions';
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -28,6 +29,7 @@ const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
   const dispatch = useDispatch();
   const dataId = useSelector(selectDataId);
   const undoAction = useSelector(selectUndoAction);
+
   const [highlight, setHighlight] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -43,7 +45,7 @@ const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
     closeMenu();
   };
 
-  const onDelete = () => {
+  const onDeleteUser = () => {
     dispatch(deleteOneUser(id));
     closeMenu();
   };
@@ -53,7 +55,7 @@ const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
     return pinnedTopRow ? pinnedTopRow.data.id : null;
   };
 
-  const onRowPin = () => {
+  const onTopRowPinned = () => {
     closeMenu();
     const selectedRows = api.getSelectedRows();
     const pinnedTopRowId = getPinnedTopRowId();
@@ -76,12 +78,11 @@ const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
     <>
       <IconButton
         size="small"
-        className={cls.btn}
         onClick={openMenu}
+        className={cls.btn}
       >
         <span className="material-icons">more_vert</span>
       </IconButton>
-
       <Menu
         anchorEl={anchorEl}
         open={!!anchorEl}
@@ -97,7 +98,7 @@ const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
           <ListItemText primary="Highlight"/>
         </MenuItem>
         <MenuItem
-          onClick={onDelete}
+          onClick={onDeleteUser}
         >
           <ListItemIcon className={cls.icon}>
             <span className="material-icons">delete</span>
@@ -105,15 +106,16 @@ const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
           <ListItemText primary="Delete"/>
         </MenuItem>
         <MenuItem
-          onClick={onRowPin}
+          onClick={onTopRowPinned}
         >
           <ListItemIcon className={cls.icon}>
             <span className="material-icons">push_pin</span>
           </ListItemIcon>
-          <ListItemText primary={id !== getPinnedTopRowId() ? 'Pin row' : 'Unpin row'} />
+          <ListItemText
+            primary={id !== getPinnedTopRowId() ? 'Pin row' : 'Unpin row'}
+          />
         </MenuItem>
       </Menu>
-
       <span className={highlight ? cls.highlighted : cls.default}>
         {value}
       </span>

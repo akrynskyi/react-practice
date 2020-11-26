@@ -1,5 +1,12 @@
 import { createReducer } from 'typesafe-actions';
-import { deleteManyUsers, deleteOneUser, fetchUsers, updateUser, UsersActions } from '../actions/usersActions';
+import {
+  deleteManyUsers,
+  deleteOneUser,
+  fetchUsers,
+  manualUserUpdate, toggleAutosaveUsers, updateManyUsers,
+  updateUser,
+  UsersActions
+} from '../actions/usersActions';
 
 export interface User {
   id: number,
@@ -22,12 +29,16 @@ export interface User {
 
 export interface UsersState {
   users: User[],
-  error: any
+  usersToUpdate: User[],
+  error: any,
+  autosave: boolean,
 }
 
 const initialState: UsersState = {
   users: [],
-  error: null
+  usersToUpdate: [],
+  error: null,
+  autosave: true,
 };
 
 const removeItemFromArray = <T extends Array<any>>(
@@ -45,6 +56,7 @@ export const usersReducer = createReducer<UsersState, UsersActions>(initialState
     users: action.payload
   }))
   .handleAction(fetchUsers.failure, (state, action) => ({
+    ...state,
     users: [],
     error: action.payload
   }))
@@ -56,7 +68,27 @@ export const usersReducer = createReducer<UsersState, UsersActions>(initialState
     ...state,
     users: removeManyItemsFromArray(state.users, action.payload)
   }))
-  .handleAction(updateUser, (state, action) => ({
+  .handleAction(updateUser.request, (state, action) => ({
     ...state,
     users: updateItemInArray<User[], User>(state.users, action.payload)
+  }))
+  .handleAction(updateUser.failure, (state, action) => ({
+    ...state,
+    error: action.payload
+  }))
+  .handleAction(manualUserUpdate, (state, action) => ({
+    ...state,
+    usersToUpdate: [...state.usersToUpdate, action.payload]
+  }))
+  .handleAction(toggleAutosaveUsers, (state) => ({
+    ...state,
+    autosave: !state.autosave,
+  }))
+  .handleAction(updateManyUsers.success, (state) => ({
+    ...state,
+    usersToUpdate: [],
+  }))
+  .handleAction(updateManyUsers.failure, (state, action) => ({
+    ...state,
+    error: action.payload
   }))

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, CircularProgress, Paper, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, CircularProgress, Paper, Typography } from '@material-ui/core';
 
 import { notesSelector, selectNotesLoading } from '../store';
 import { fetchNotes } from '../store/actions/notesActions';
@@ -16,10 +16,10 @@ const useStyles = makeStyles({
 });
 
 const NotesPage: React.FC = () => {
+  const cls = useStyles();
   const dispatch = useDispatch();
   const notes = useSelector(notesSelector);
   const loading = useSelector(selectNotesLoading);
-  const cls = useStyles();
 
   useEffect(() => {
     if (notes.length) return;

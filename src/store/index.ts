@@ -1,13 +1,14 @@
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createEpicMiddleware } from 'redux-observable';
+import { createSelector } from 'reselect';
 
 import epics from './epics';
-import reducers, { AppState } from './reducers';
 import ActionTypes from './actions';
+import reducers, { AppState } from './reducers';
 import DataService from '../services/DataService';
-import { createSelector } from 'reselect';
 import { NotesState } from './reducers/notesReducer';
+import { UsersState } from './reducers/usersReducer';
 
 const epicMiddleware = createEpicMiddleware<ActionTypes, ActionTypes, AppState>({
   dependencies: new DataService()
@@ -46,4 +47,17 @@ export const selectDataId = ({ notification }: AppState) => notification.dataId;
 /*
   Users selectors
  */
+const selectUsersState = ({ users }: AppState) => users;
+const selectAutosave = (users: UsersState) => users.autosave;
+
 export const selectUsers = ({ users }: AppState) => users.users;
+
+export const autosaveSelector = createSelector(
+  selectUsersState,
+  selectAutosave
+);
+
+export const isUsersToUpdateExistsSelector = createSelector(
+  selectUsersState,
+  ({ usersToUpdate }) => !!usersToUpdate.length
+);

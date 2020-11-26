@@ -1,9 +1,9 @@
 import { ajax } from 'rxjs/ajax';
 import { fromFetch } from 'rxjs/fetch';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { User } from '../store/reducers/usersReducer';
 
-const FB_DB = 'https://grid-data-test.firebaseio.com';
+const { REACT_APP_FB_DATABASE_URL: FB_DB } = process.env;
 const JSONP = 'https://jsonplaceholder.typicode.com/';
 
 export default class DataService {
@@ -42,6 +42,17 @@ export default class DataService {
   updateUser(body: User) {
     return ajax.put(`${FB_DB}/users/${body.id}.json`, JSON.stringify(body)).pipe(
       map(({ response }) => (response as User))
+    );
+  }
+
+  updateManyUsers(users: User[]) {
+    const body = users.reduce((body, user) => {
+      body[user.id] = user;
+      return body;
+    }, {} as { [key: string]: User });
+
+    return ajax.patch(`${FB_DB}/users.json`, JSON.stringify(body)).pipe(
+      tap(({ response }) => console.log(response))
     );
   }
 
