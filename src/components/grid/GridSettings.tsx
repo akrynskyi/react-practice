@@ -1,14 +1,16 @@
 import React from 'react';
 import {
-  List,
-  Paper,
   Divider,
-  MenuItem,
+  List,
   ListItem,
-  ListItemText,
-  Select, Switch,
   ListItemSecondaryAction,
+  ListItemText,
+  MenuItem,
+  Paper,
+  Select,
+  Switch,
 } from '@material-ui/core';
+import { GridApi } from 'ag-grid-community';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -32,12 +34,33 @@ const useStyles = makeStyles({
   }
 });
 
-const GridSettings = () => {
+interface GridSettingsProps {
+  gridApi: GridApi | null,
+  quickSearchPanelVisible: boolean,
+  toggleQuickSearchPanel: () => void,
+  setPageSize: React.Dispatch<React.SetStateAction<number>>,
+  pageSize: number,
+}
+
+const GridSettings: React.FC<GridSettingsProps> = (props) => {
+  const {
+    gridApi,
+    toggleQuickSearchPanel,
+    quickSearchPanelVisible,
+    pageSize,
+    setPageSize,
+  } = props;
   const cls = useStyles();
   const dispatch = useDispatch();
   const autosave = useSelector(autosaveSelector);
 
   const toggleAutosave = () => dispatch(toggleAutosaveUsers());
+
+  const onPageSizeChanged = ({ target }: React.ChangeEvent<{ value: unknown }>) => {
+    const pageSize = Number(target.value);
+    setPageSize(pageSize);
+    gridApi?.paginationSetPageSize(pageSize);
+  };
 
   return (
     <Paper className={cls.paper}>
@@ -46,9 +69,10 @@ const GridSettings = () => {
           <ListItemText primary="Page size"/>
           <ListItemSecondaryAction>
             <Select
-              value={10}
               displayEmpty
+              value={pageSize}
               className={cls.select}
+              onChange={onPageSizeChanged}
             >
               <MenuItem value={10}>10</MenuItem>
               <MenuItem value={20}>20</MenuItem>
@@ -56,18 +80,17 @@ const GridSettings = () => {
             </Select>
           </ListItemSecondaryAction>
         </ListItem>
-
         <Divider />
-
         <ListItem>
           <ListItemText primary="Quick search"/>
           <ListItemSecondaryAction>
-            <Switch />
+            <Switch
+              checked={quickSearchPanelVisible}
+              onChange={toggleQuickSearchPanel}
+            />
           </ListItemSecondaryAction>
         </ListItem>
-
         <Divider />
-
         <ListItem>
           <ListItemText primary="Autosave"/>
           <ListItemSecondaryAction>
@@ -82,4 +105,4 @@ const GridSettings = () => {
   );
 };
 
-export default GridSettings;
+export default React.memo(GridSettings);

@@ -4,14 +4,16 @@ export enum NotificationActionTypes {
   undoAction = '[NOTIFICATION] Undo action',
 }
 
-interface NotificationData {
+interface NotificationOptions {
   text: string,
   id?: number | string,
+  displayUndoButton?: boolean,
+  type?: 'success' | 'info' | 'error'
 }
 
 interface ShowNotification {
   type: NotificationActionTypes.showNotification,
-  payload: string | NotificationData
+  payload: NotificationOptions
 }
 
 interface HideNotification {
@@ -22,7 +24,7 @@ interface UndoAction {
   type: NotificationActionTypes.undoAction,
 }
 
-export const showNotification = (payload: string | NotificationData) => ({
+export const showNotification = (payload: NotificationOptions) => ({
   type: NotificationActionTypes.showNotification,
   payload,
 });

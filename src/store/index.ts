@@ -43,6 +43,8 @@ export const selectNotificationVisible = ({ notification }: AppState) => notific
 export const selectNotificationMessage = ({ notification }: AppState) => notification.message;
 export const selectUndoAction = ({ notification }: AppState) => notification.undo;
 export const selectDataId = ({ notification }: AppState) => notification.dataId;
+export const selectDisplayUndoButton = ({ notification }: AppState) => notification.displayUndoButton;
+export const selectType = ({ notification }: AppState) => notification.type;
 
 /*
   Users selectors

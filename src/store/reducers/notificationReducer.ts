@@ -5,12 +5,16 @@ export interface NotificationState {
   visible: boolean,
   message: string | null,
   dataId?: number | string,
+  displayUndoButton: boolean,
+  type: 'success' | 'info' | 'error' | undefined
 }
 
 const initialState: NotificationState = {
   undo: false,
   visible: false,
   message: null,
+  displayUndoButton: false,
+  type: undefined,
 };
 
 export const notificationReducer = (
@@ -21,10 +25,10 @@ export const notificationReducer = (
       return {
         undo: false,
         visible: true,
-        message: typeof action.payload === 'object'
-          ? action.payload.text
-          : action.payload,
-        dataId: typeof action.payload === 'object' && action.payload.id
+        message: action.payload.text,
+        dataId: action.payload.id,
+        type: action.payload.type || undefined,
+        displayUndoButton: action.payload.displayUndoButton || false,
       };
 
     case NotificationActionTypes.hideNotification:

@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, ButtonGroup, IconButton, TextField, Tooltip } from '@material-ui/core';
 
 import DataService from '../services/DataService';
+import { PAGINATION_PAGE_SIZE } from '../constants/grid';
 import { AvatarComponent, GridSettings, MenuComponent } from '../components/grid';
 import { autosaveSelector, isUsersToUpdateExistsSelector, selectUsers } from '../store';
 import { deleteManyUsers, fetchUsers, updateManyUsers, updateUser } from '../store/actions/usersActions';
@@ -35,12 +36,15 @@ const GridPage: React.FC = () => {
   const autosave = useSelector(autosaveSelector);
   const isUsersToUpdateExists = useSelector(isUsersToUpdateExistsSelector);
 
+  const [pageSize, setPageSize] = useState(PAGINATION_PAGE_SIZE);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
   const [settingsVisible, setSettingsVisible] = useState(true);
+  const [quickSearchVisible, setQuickSearchVisible] = useState(false);
   const [isMultiRowsSelected, setIsMultiRowsSelected] = useState(false);
 
   const saveRowDataChanges = () => dispatch(updateManyUsers.request());
   const toggleSettingsVisible = () => setSettingsVisible((visible) => !visible);
+  const toggleQuickSearchVisible = () => setQuickSearchVisible((visible) => !visible);
 
   const setValue2 = (field: string) => ({ data, newValue }: ValueSetterParams) => {
     const keys = field.split('.');
@@ -73,7 +77,6 @@ const GridPage: React.FC = () => {
           flex: 2,
           field: 'name',
           headerName: 'Name',
-          checkboxSelection: true,
           cellRenderer: 'menuComponent',
           filter: 'agTextColumnFilter',
           valueSetter: setValue('name')
@@ -162,11 +165,15 @@ const GridPage: React.FC = () => {
     } as ColGroupDef,
   ];
 
-  const defaultColDef = {
+  const defaultColDef: ColDef = {
     sortable: true,
     resizable: true,
     editable: true,
     floatingFilter: true,
+    checkboxSelection: ({ columnApi, column }) => {
+      const displayedColumns = columnApi.getAllDisplayedColumns();
+      return displayedColumns[0] === column;
+    }
   };
 
   useMount(() => {
@@ -214,22 +221,25 @@ const GridPage: React.FC = () => {
       className="ag-theme-alpine-dark"
       style={{ height: '700px' }}
     >
-      <Box paddingBottom={10}>
-        <TextField
-          fullWidth
-          size="small"
-          color="primary"
-          variant="outlined"
-          label="Quick search"
-          onChange={handleSearchField}
-        />
-      </Box>
-
+      {
+        quickSearchVisible && (
+          <Box paddingBottom={10}>
+            <TextField
+              fullWidth
+              size="small"
+              color="primary"
+              variant="outlined"
+              label="Quick search"
+              onChange={handleSearchField}
+            />
+          </Box>
+        )
+      }
       <AgGridReact
         rowData={users}
         animateRows={true}
         pagination={true}
-        paginationPageSize={20}
+        paginationPageSize={PAGINATION_PAGE_SIZE}
         immutableData={true}
         columnDefs={columnDefs}
         rowSelection="multiple"
@@ -239,8 +249,8 @@ const GridPage: React.FC = () => {
         onSelectionChanged={onSelectionChanged}
         onCellValueChanged={onCellValueChanged}
         frameworkComponents={frameworkComponentsMap}
+        suppressRowClickSelection={true}
       />
-
       <Box
         py={5}
         display="flex"
@@ -265,7 +275,7 @@ const GridPage: React.FC = () => {
             >
               <IconButton
                 size="medium"
-                disabled={autosave}
+                disabled={autosave || !isUsersToUpdateExists}
                 onClick={saveRowDataChanges}
               >
                 <span className="material-icons">save</span>
@@ -290,7 +300,16 @@ const GridPage: React.FC = () => {
           )
         }
       </Box>
-      {settingsVisible && <GridSettings />}
+      {
+        settingsVisible && (
+        <GridSettings
+          gridApi={gridApi}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          quickSearchPanelVisible={quickSearchVisible}
+          toggleQuickSearchPanel={toggleQuickSearchVisible}
+        />)
+      }
     </div>
   );
 };

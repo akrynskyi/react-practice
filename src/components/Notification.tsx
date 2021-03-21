@@ -1,38 +1,49 @@
 import React from 'react';
-import { Button, Slide, Snackbar, SnackbarCloseReason } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
+import { Button, IconButton, Slide, Snackbar, SnackbarCloseReason } from '@material-ui/core';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { selectNotificationMessage, selectNotificationVisible } from '../store';
+import { selectDisplayUndoButton, selectNotificationMessage, selectNotificationVisible, selectType } from '../store';
 import { hideNotification, undoAction } from '../store/actions/notificationActions';
 
 interface NotificationActionProps {
-  handleClose: (undo?: boolean) => any
+  handleClose: (undo?: boolean) => any,
+  undoButtonVisible: boolean,
 }
 
-const NotificationAction: React.FC<NotificationActionProps> = ({handleClose}) => {
+const NotificationAction: React.FC<NotificationActionProps> = (
+  { handleClose, undoButtonVisible }) => {
   return (
     <>
-      <Button
-        color="primary"
+      {
+        undoButtonVisible && (
+          <Button
+            size="small"
+            color="inherit"
+            onClick={handleClose(true)}
+          >
+            UNDO
+          </Button>
+        )
+      }
+      <IconButton
         size="small"
-        onClick={handleClose(true)}
-      >
-        UNDO
-      </Button>
-      <Button
-        color="secondary"
-        size="small"
+        color="inherit"
         onClick={handleClose()}
       >
-        CLOSE
-      </Button>
+        <CloseIcon fontSize="small"/>
+      </IconButton>
     </>
   );
 };
 
 export const Notification = () => {
   const dispatch = useDispatch();
+  const type = useSelector(selectType);
   const visible = useSelector(selectNotificationVisible);
   const message = useSelector(selectNotificationMessage);
+  const undoButtonVisible = useSelector(selectDisplayUndoButton);
 
   const handleClose = (undo = false) => (
     event: React.SyntheticEvent,
@@ -49,12 +60,19 @@ export const Notification = () => {
   return (
     <Snackbar
       open={visible}
-      message={message}
       autoHideDuration={4000}
       onClose={handleClose()}
       TransitionComponent={Slide}
-      action={<NotificationAction handleClose={handleClose} />}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-    />
+    >
+      <Alert
+        variant="filled"
+        severity={type}
+        onClose={handleClose()}
+        action={<NotificationAction handleClose={handleClose} undoButtonVisible={undoButtonVisible} />}
+      >
+        {message}
+      </Alert>
+    </Snackbar>
   );
 };

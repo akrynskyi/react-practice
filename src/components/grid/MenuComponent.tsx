@@ -40,7 +40,9 @@ const MenuComponent = ({ value, data, api }: ICellRendererParams) => {
     setHighlight(true);
     dispatch(showNotification({
       id,
+      displayUndoButton: true,
       text: `You highlighted ${value}`,
+      type: 'info',
     }));
     closeMenu();
   };
